@@ -44,6 +44,10 @@ module BabySqueel
         def build_joins(manager, joins, aliases)
           super manager, BabySqueel::JoinDependency::Injector.new(joins), aliases
         end
+      elsif ::ActiveRecord::VERSION::MAJOR >= 6
+        def build_joins(joins, aliases)
+          super BabySqueel::JoinDependency::Injector.new(joins), aliases
+        end
       else
         def build_joins(manager, joins)
           super manager, BabySqueel::JoinDependency::Injector.new(joins)
